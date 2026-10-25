@@ -3,8 +3,7 @@ class AppError extends Error {
     super(message);
 
     this.statusCode = statusCode;
-    this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error';
-    this.isOperational = true; // marks expected/operational errors
+    this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error';   
 
     Error.captureStackTrace(this, this.constructor);
   }
@@ -16,7 +15,7 @@ class AppError extends Error {
 
 
 // Catch async errors automatically (wrapper)
-const catchAsync = (fn) => {
+export const catchAsync = (fn) => {
   return (req, res, next) => {
     fn(req, res, next).catch(next);
   };
@@ -26,35 +25,21 @@ const catchAsync = (fn) => {
 
 
 // Global error handling middleware
-const errorHandler = (err, req, res, next) => {
-  err.statusCode = err.statusCode || 500;
-  err.status = err.status || 'error';
+export const errorHandler = (err, req, res, next) => {  
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Something went wrong";
 
-  // Development: send full error details
-  if (process.env.NODE_ENV === 'development') {
-    return res.status(err.statusCode).json({
-      status: err.status,
-      error: err,
-      message: err.message,
-      stack: err.stack,
-    });
-  }
-
-  // Production: only send operational errors
-  if (err.isOperational) {
-    return res.status(err.statusCode).json({
-      status: err.status,
-      message: err.message,
-    });
-  }
-
-  // Programming or unknown errors → don't leak details
-  console.error('ERROR 💥', err);
-  return res.status(500).json({
-    status: 'error',
-    message: 'Something went wrong!',
+  res.status(statusCode).json({
+    success: false,
+    statusCode: statusCode,
+    message: message,
+    errorSources: err.errorSources || [],
+    stack: process.env.NODE_ENV === "development" ? err.stack : null,
   });
+  
 };
 
-module.exports = { AppError, catchAsync, errorHandler };
 
+
+
+export default AppError;

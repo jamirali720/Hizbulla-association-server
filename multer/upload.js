@@ -1,9 +1,10 @@
 import { v2 as cloudinary } from "cloudinary";
-import { deleteImagePath } from "../utils/deleteImagePath";
-import multer, { Multer } from "multer";
+
+import multer from "multer";
+
 import path from "path";
 import fs from "fs";
-
+import { deleteImagePath } from "../utils/helper.js";
 
 // Configuration
 cloudinary.config({
@@ -48,7 +49,7 @@ export const uploadImageToCloudinary = (path, name) => {
         }
         resolve(result);
         deleteImagePath(path);
-      }
+      },
     );
   });
 };

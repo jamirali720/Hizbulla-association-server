@@ -1,13 +1,22 @@
 import { Schema, model } from "mongoose";
 
-import bcrypt from "bcrypt";
-import { unionNames, userPosts, userRoles, wardNumbers } from "../utils/helper";
+import bcrypt from "bcryptjs";
+
+import dotenv from "dotenv";
+dotenv.config();
+
+
 
 const userSchema = new Schema(
   {
-    name: {
+    fullname: {
       type: String,
       required: [true, "Name is required"],
+      trim: true,
+    },
+    userId: {
+      type: String,
+      required: [true, "User ID is required"],
       trim: true,
     },
 
@@ -44,41 +53,41 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Union is required"],
       trim: true,
-      enum: [...unionNames], // Validate against the unionNames enum
     },
-    address: {
+    village: {
       type: String,
       required: [true, "Address is required"],
       trim: true,
     },
-    userPost: {
+    position: {
       type: String,
       trim: true,
-      enum: [...userPosts],
+      default:""
+
     },
     isActive: {
       type: Boolean,
       default: true,
     },
 
-    wardNo: {
+    ward: {
       type: String,
       default: 0,
-      enum: [...wardNumbers],
     },
     role: {
       type: String,
-      default: "মুরিদ",
-      enum: [...userRoles],
+      default: "ইউজার",
+    },
+    position: {
+      type: String,
+      default: "মুরীদ",
     },
     image: {
       url: {
         type: String,
-        required: [true, "Image URL is required"],
       },
       public_id: {
         type: String,
-        required: [true, "Public ID is required"],
       },
     },
   },
@@ -87,11 +96,11 @@ const userSchema = new Schema(
 
 // password hashing before saving user
 userSchema.pre("save", async function (next) {
-  this.password = await bcrypt.hash(this.password, process.env.SALT_ROUNDS);
-  if (this.email === process.env.ADMIN_EMAIL) {
-    this.role = "admin";
+  this.password = await bcrypt.hash(this.password, 10);
+  if (this.phone === process.env.ADMIN_PHONE) {
+    this.role = "অ্যাডমিন";
   }
-  next();
+  // next();
 });
 
 export const User = model("User", userSchema);

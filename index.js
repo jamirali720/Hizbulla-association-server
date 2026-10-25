@@ -1,7 +1,7 @@
 // Example JSON endpoint
 const port = process.env.PORT || 4000; // Use the PORT from .env or default to 4000
-const app = require("./app");
-const connectDB = require("./database/db");
+import app from "./app.js";
+import connectDB from "./database/db.js";
 
 // Start the server
 app.listen(port, () => {

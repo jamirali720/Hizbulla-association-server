@@ -1,8 +1,12 @@
-const jwt = require("jsonwebtoken")
+import jwt from "jsonwebtoken";
 import fs from "fs";
-const userRoles = [অ্যাডমিন, ইউজার, মুরিদ, মুহিব্বীন];
+import { User } from "../model/user.model.js";
+import CommitteeUser from "../model/committee.model.js";
 
-const userPosts = [
+export const userRoles = ["অ্যাডমিন", "ইউজার"];
+
+
+export const committeePosts = [
   "সভাপতি",
   "সহ-সভাপতি",
   "সাধারণ সম্পাদক",
@@ -26,7 +30,7 @@ const userPosts = [
   "সদস্য",
 ];
 
-const unionNames = [
+export const unionNames = [
   "সাতানী",
   "জগতপুর",
   "বলরামপুর",
@@ -38,38 +42,27 @@ const unionNames = [
   "মজিদপুর",
 ];
 
-const wardNumbers = [
-  "এক",
-  "দুই",
-  "তিন",
-  "চার",
-  "পাঁচ",
-  "ছয়",
-  "সাত",
-  "আট",
-  "নয়",
+export const wardNumbers = [
+  "ওয়ার্ড-এক",
+  "ওয়ার্ড-দুই",
+  "ওয়ার্ড-তিন",
+  "ওয়ার্ড-চার",
+  "ওয়ার্ড-পাঁচ",
+  "ওয়ার্ড-ছয়",
+  "ওয়ার্ড-সাত",
+  "ওয়ার্ড-আট",
+  "ওয়ার্ড-নয়",
 ];
 
-
-
-
-
-const createAccessToken = (payload, secretKey, expiresIn) => {
+export const createAccessToken = (payload, secretKey, expiresIn) => {
   const tokenObject = {
-    userId: payload._id,   
+    userId: payload._id,
     role: payload.role,
   };
-   return jwt.sign(tokenObject, secretKey, { expiresIn });
+  return jwt.sign(tokenObject, secretKey, { expiresIn });
 };
 
-
-
-
-
-
-
-
-const deleteImagePath = (path) => {
+export const deleteImagePath = (path) => {
   fs.unlink(path, (err) => {
     if (err) {
       console.log(err);
@@ -78,11 +71,10 @@ const deleteImagePath = (path) => {
   });
 };
 
-module.exports = {
-  userRoles,
-  userPosts,
-  unionNames,
-  wardNumbers,
-  createAccessToken,
-  deleteImagePath,
+export const generateUserId = async () => {
+  const lastUser = await User.findOne().sort({userId: -1}).exec();
+  const lastId =lastUser ? parseInt(lastUser.userId) : 0;
+  const newId = (lastId + 1).toString().padStart(7, "0") ;
+  return newId;
 };
+
