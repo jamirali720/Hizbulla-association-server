@@ -1,46 +1,18 @@
-import express from 'express';
-import Union from '../model/union.model.js';
+import express from "express";
+
+import { upload } from "./../multer/upload.js";
+import { handleCreateUnionCommittee, handleDeletedUnionCommittee, handleGetUnionCommittee, handleUpdatedUnionCommittee } from "../controllers/union.controller.js";
+
 const unionRouter = express.Router();
 
+// Get all
+unionRouter.route("/").get(handleGetUnionCommittee);
+// create
+unionRouter.route("/").post(upload.none(), handleCreateUnionCommittee);
 
-unionRouter.get("/", async (req, res) => {
-  try {
-    const data = await Union.find().populate("upazila").sort({ name: 1 });
-    res.json(data);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
+// update
+unionRouter.route("/:uncommitteeId").put(handleUpdatedUnionCommittee);
+//delete
+unionRouter.route("/:uncommitteeId").delete(handleDeletedUnionCommittee);
 
-unionRouter.post("/", async (req, res) => {
-  try {
-    const union = new Union(req.body);
-    const saved = await union.save();
-    const populated = await Union.findById(saved._id).populate("upazila");
-    res.status(201).json(populated);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-});
-
-unionRouter.put("/:id", async (req, res) => {
-  try {
-    const updated = await Union.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    }).populate("upazila");
-    res.json(updated);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-});
-
-unionRouter.delete("/:id", async (req, res) => {
-  try {
-    await Union.findByIdAndDelete(req.params.id);
-    res.json({ message: "Deleted successfully" });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-export default  unionRouter;
+export default unionRouter;

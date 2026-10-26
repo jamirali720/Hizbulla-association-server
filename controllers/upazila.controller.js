@@ -13,7 +13,7 @@ export const handleGetUpazilaCommittee = catchAsync(async (req, res) => {
   });
 });
 export const handleCreateUpazilaCommittee = catchAsync(async (req, res) => {
-  console.log("from contro", req.body)
+  // console.log("from contro", req.body)
   const result = await CreateUpazilaCommitteeService(req.body);
   successResponse(res, {
     success: true,
@@ -23,7 +23,7 @@ export const handleCreateUpazilaCommittee = catchAsync(async (req, res) => {
   });
 });
 export const handleUpdatedUpazilaCommittee = catchAsync(async (req, res) => {
-  const result = await updatedUpazilaCommitteeService({...req.body, committeId: req.params.committeId});
+  const result = await updatedUpazilaCommitteeService({...req.body, upcommitteeId: req.params.upcommitteeId});
   successResponse(res, {
     success: true,
     statusCode: 200,
@@ -32,7 +32,7 @@ export const handleUpdatedUpazilaCommittee = catchAsync(async (req, res) => {
   });
 });
 export const handleDeletedUpazilaCommittee = catchAsync(async (req, res) => {
-  const result = await deletedUpazilaCommitteeService(req.params.committeId);
+  const result = await deletedUpazilaCommitteeService(req.params.upcommitteeId);
   successResponse(res, {
     success: true,
     statusCode: 200,

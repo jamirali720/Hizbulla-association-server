@@ -27,7 +27,12 @@ export const catchAsync = (fn) => {
 // Global error handling middleware
 export const errorHandler = (err, req, res, next) => {  
   const statusCode = err.statusCode || 500;
-  const message = err.message || "Something went wrong";
+  let message = err.message || "Something went wrong";
+  if (err.code === 11000) {
+   const field = Object.keys(err.keyValue)[0];
+    const value = err.keyValue[field];
+    message= `Duplicate field value: "${value}". Please use another ${field}.`;
+  }
 
   res.status(statusCode).json({
     success: false,

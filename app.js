@@ -7,9 +7,7 @@ dotenv.config();
 
 import {errorHandler} from './utils/errors.js';
 import router from './routes/index.js';
-import upazilaRouter from './routers/upazila.router.js';
-import unionRouter from './routers/union.router.js';
-import wardRouter from './routers/ward.router.js';
+
 
 
 
@@ -24,9 +22,7 @@ app.use(
 );
 
 app.use("/api", router)
-app.use("/api/upazilas", upazilaRouter);
-app.use("/api/unions", unionRouter);
-app.use("/api/wards", wardRouter);
+
 // Basic route
 app.get('/', (req, res) => {
   res.send('Hello World from Express!');

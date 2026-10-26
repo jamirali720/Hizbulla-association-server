@@ -15,8 +15,8 @@ upazilaRouter.route("/").get(handleGetUpazilaCommittee);
 upazilaRouter.route("/").post( upload.none(),handleCreateUpazilaCommittee);
 
 // update
-upazilaRouter.route("/:committeeId").put(handleUpdatedUpazilaCommittee);
+upazilaRouter.route("/:upcommitteeId").put(handleUpdatedUpazilaCommittee);
 //delete
-upazilaRouter.route("/:committeeId").delete(handleDeletedUpazilaCommittee);
+upazilaRouter.route("/:upcommitteeId").delete(handleDeletedUpazilaCommittee);
 
 export default upazilaRouter;

@@ -4,9 +4,8 @@ import { Schema, model } from "mongoose";
 
 const wardCommitteeSchema = Schema(
   {
-    unionCommittee: {
-      type: Schema.Types.ObjectId,
-      ref: "Union",
+    unionId: {
+      type: String,
       required: true,
     },
     wardId: {
@@ -31,6 +30,10 @@ const wardCommitteeSchema = Schema(
     isActive: {
       type: Boolean,
       default: true,
+    },
+    sorting: {
+      type: Number,
+      default: 0,
     },
     user: {
       type: Schema.Types.ObjectId,

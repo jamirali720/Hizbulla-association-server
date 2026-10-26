@@ -34,6 +34,10 @@ const upazilaSchema = new Schema(
       type: Boolean,
       default: true,
     },
+    sorting: {
+      type: Number,
+      default: 0,
+    },
     user: {
       type: Schema.Types.ObjectId,
       ref: "User",

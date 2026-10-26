@@ -2,9 +2,8 @@ import { Schema, model } from "mongoose";
 
 const unionSchema = new Schema(
   {
-    upazilaCommittee: {
-      type: Schema.Types.ObjectId,
-      ref: "Upazila",
+    upazilaId: {
+      type: String,      
       required: true,
     },
     unionId: {
@@ -29,6 +28,10 @@ const unionSchema = new Schema(
     isActive: {
       type: Boolean,
       default: true,
+    },
+    sorting: {
+      type: Number,
+      default:0,
     },
     user: {
       type: Schema.Types.ObjectId,
