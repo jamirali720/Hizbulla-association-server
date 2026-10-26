@@ -3,7 +3,7 @@ import AppError from "../utils/errors.js";
 
 // get ward committees
 export const getWardCommitteeService = async (query) => {
-console.log(query)
+  console.log(query);
   const { ward } = query;
   const filterWard =
     ward === "" ? {} : { wardName: { $regex: ward, $options: "i" } };
@@ -24,15 +24,31 @@ export const CreateWardCommitteeService = async (payload) => {
   payload.sorting = filteredCommittees.length + 1;
 
   committees.map((committee) => {
+    // if (
+    //   committee.user._id.toString() === payload.user.toString() &&
+    //   committee.unionId === payload.unionId &&
+    //   committee.wardId.toString() === payload.wardId.toString() &&
+    //   committee.position === payload.position
+    // ) {
+    //   throw new AppError(
+    //     400,
+    //     `এই ${committee.user.fullname} - ${committee.position} পদে ${committee.committeeName}তে যুক্ত আছেন। ${payload.position} পদে যুক্ত হতে পারেন না`,
+    //   );
+    // }
+
+    const isSameUser =
+      committee.user?._id?.toString() === payload.user?.toString() ||
+      committee.user?.toString() === payload.user?.toString(); // fallback if not populated
+
     if (
-      committee.user._id.toString() === payload.user.toString() &&
-      committee.unionId === payload.unionId &&
-      committee.wardId.toString() === payload.wardId.toString() &&
+      isSameUser &&
+      committee.unionId?.toString() === payload.unionId?.toString() && // safe string comparison for all IDs
+      committee.wardId?.toString() === payload.wardId?.toString() &&
       committee.position === payload.position
     ) {
       throw new AppError(
         400,
-        `এই ${committee.user.fullname} - ${committee.position} পদে ${committee.committeeName}তে যুক্ত আছেন। ${payload.position} পদে যুক্ত হতে পারেন না`,
+        `এই ${committee.user?.fullname || "ব্যবহারকারী"} - ${committee.position} পদে ${committee.committeeName}তে যুক্ত আছেন। ${payload.position} পদে যুক্ত হতে পারেন না`,
       );
     }
     if (
@@ -50,7 +66,6 @@ export const CreateWardCommitteeService = async (payload) => {
 
   return result;
 };
-
 
 // update ward by ID
 export const updatedWardCommitteeService = async (payload) => {
