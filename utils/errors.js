@@ -32,6 +32,7 @@ export const errorHandler = (err, req, res, next) => {
    const field = Object.keys(err.keyValue)[0];
     const value = err.keyValue[field];
     message= `Duplicate field value: "${value}". Please use another ${field}.`;
+   
   }
 
   res.status(statusCode).json({

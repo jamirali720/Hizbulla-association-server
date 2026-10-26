@@ -1,7 +1,5 @@
 import { Schema, model } from "mongoose";
 
-
-
 const wardCommitteeSchema = Schema(
   {
     unionId: {
@@ -44,9 +42,6 @@ const wardCommitteeSchema = Schema(
   { timestamps: true },
 );
 
-// wardCommitteeSchema.index(
-//   { user: 1, unionId: 1, wardId: 1, position: 1 },
-//   { unique: true },
-// );
+
 const WardCommittee = model("WardCommittee", wardCommitteeSchema);
 export default WardCommittee;

@@ -12,12 +12,12 @@ export const handleGetWardCommittee = catchAsync(async (req, res) => {
   });
 });
 export const handleCreateWardCommittee = catchAsync(async (req, res) => {
-  console.log("from contro", req.body) 
+  // console.log("from contro", req.body) 
   const result = await CreateWardCommitteeService(req.body);
   successResponse(res, {
     success: true,
     statusCode: 201,
-    message: "Ward committee created successfully",
+    message: "ওয়ার্ড কমিটিতে সফলভাবে অ্যাড করা হয়েছে।",
     data: result,
   });
 });
@@ -29,7 +29,7 @@ export const handleUpdatedWardCommittee = catchAsync(async (req, res) => {
   successResponse(res, {
     success: true,
     statusCode: 200,
-    message: "Ward committee updated successfully",
+    message: "ওয়ার্ড কমিটি সফলভাবে আপডেট হয়েছে।",
     data: result,
   });
 });
@@ -38,7 +38,7 @@ export const handleDeletedWardCommittee = catchAsync(async (req, res) => {
   successResponse(res, {
     success: true,
     statusCode: 200,
-    message: "Ward committee deleted successfully",
+    message: "ওয়ার্ড কমিটি সফলভাবে ডিলিট হয়েছে।",
     data: result,
   });
 });

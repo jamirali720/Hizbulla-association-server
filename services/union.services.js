@@ -1,22 +1,22 @@
 import AppError from "../utils/errors.js";
 import Union from "./../model/union.model.js";
 
-
 export const getUnionCommitteeService = async (query) => {
-
   const { union } = query;
   const filterUnion =
     union === "" ? {} : { unionName: { $regex: union, $options: "i" } };
-  
 
-
-  return await Union.find(filterUnion).populate("user").sort({sorting: 1});
+  return await Union.find(filterUnion).populate("user").sort({ sorting: 1 });
 };
 
 export const CreateUnionCommitteeService = async (payload) => {
   const committees = await Union.find().populate("user");
-  const filteredCommittees = committees.filter(item => item.unionId === payload.unionId);
+  const filteredCommittees = committees.filter(
+    (item) => item.unionId === payload.unionId,
+  );
+console.log("from union", payload)
   payload.sorting = filteredCommittees.length + 1;
+
   committees.map((committee) => {
     if (
       committee.user._id.toString() === payload.user.toString() &&

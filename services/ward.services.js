@@ -1,5 +1,6 @@
 import WardCommittee from "../model/wardCommittee.model.js";
 import AppError from "../utils/errors.js";
+import { committeePosts } from "../utils/helper.js";
 
 // get ward committees
 export const getWardCommitteeService = async (query) => {
@@ -16,7 +17,6 @@ export const getWardCommitteeService = async (query) => {
 // create new ward committee
 export const CreateWardCommitteeService = async (payload) => {
   const committees = await WardCommittee.find().populate("user");
-  console.log("from service", payload);
 
   const filteredCommittees = committees.filter(
     (item) => item.wardId === payload.wardId,
@@ -24,18 +24,6 @@ export const CreateWardCommitteeService = async (payload) => {
   payload.sorting = filteredCommittees.length + 1;
 
   committees.map((committee) => {
-    // if (
-    //   committee.user._id.toString() === payload.user.toString() &&
-    //   committee.unionId === payload.unionId &&
-    //   committee.wardId.toString() === payload.wardId.toString() &&
-    //   committee.position === payload.position
-    // ) {
-    //   throw new AppError(
-    //     400,
-    //     `এই ${committee.user.fullname} - ${committee.position} পদে ${committee.committeeName}তে যুক্ত আছেন। ${payload.position} পদে যুক্ত হতে পারেন না`,
-    //   );
-    // }
-
     const isSameUser =
       committee.user?._id?.toString() === payload.user?.toString() ||
       committee.user?.toString() === payload.user?.toString(); // fallback if not populated
@@ -48,28 +36,38 @@ export const CreateWardCommitteeService = async (payload) => {
     ) {
       throw new AppError(
         400,
-        `এই ${committee.user?.fullname || "ব্যবহারকারী"} - ${committee.position} পদে ${committee.committeeName}তে যুক্ত আছেন। ${payload.position} পদে যুক্ত হতে পারেন না`,
+        `এই ${committee.user?.fullname || "ব্যবহারকারী"} - ${committee.position} পদে ${committee.committeeName}তে যুক্ত আছেন। ${payload.position} পদে যুক্ত হতে পারবেন না`,
       );
-    }
-    if (
-      committee.committeeName === payload.committeeName &&
-      committee.position.includes(payload.position)
+    } else if (
+      committee.unionId?.toString() === payload.unionId?.toString() && // safe string comparison for all IDs
+      committee.wardId?.toString() === payload.wardId?.toString() &&
+      committee.position === payload.position
     ) {
       throw new AppError(
         400,
-        ` ${payload.position} পদ ${committee.committeeName}তে শূন্য নয়!, অন্য কোন পদে যুক্ত করুন`,
+        `এই ${committee.user?.fullname || "ব্যবহারকারী"} - ${committee.position} পদে ${committee.committeeName}তে যুক্ত আছেন। ${payload.position} পদে যুক্ত হতে পারবেন না`,
+      );
+    } else if (
+      isSameUser &&
+      committee.unionId?.toString() === payload.unionId?.toString() && // safe string comparison for all IDs
+      committee.wardId?.toString() === payload.wardId?.toString() &&
+      committeePosts.includes(payload.position)
+    ) {
+      throw new AppError(
+        400,
+        ` ${committee.user?.fullname} ইতিমধ্যে ${committee.committeeName}তে ${committee.position} পদে যুক্ত আছেন। 
+        ${payload.position} পদে আর ‍যুক্ত হতে পারবেন না ।`,
       );
     }
   });
 
-  const result = await WardCommittee.create(payload);
-
-  return result;
+  return await WardCommittee.create(payload);
 };
 
 // update ward by ID
 export const updatedWardCommitteeService = async (payload) => {
-  const id = req.params.committeeId;
+  const id = payload.wdcommitteeId;
+  console.log(id)
   const updates = {};
   Object.keys(payload).forEach((key) => {
     if (
@@ -80,7 +78,7 @@ export const updatedWardCommitteeService = async (payload) => {
       updates[key] = payload[key];
     }
   });
-  const data = await Ward.findByIdAndUpdate(id, updates, {
+  const data = await WardCommittee.findByIdAndUpdate(id, updates, {
     returnDocument: "after",
     runValidators: true,
   });
@@ -89,5 +87,6 @@ export const updatedWardCommitteeService = async (payload) => {
 
 // delete ward by ID
 export const deletedWardCommitteeService = async (id) => {
-  return await Ward.findByIdAndDelete(id);
+  console.log(id)
+  return await WardCommittee.findByIdAndDelete(id);
 };

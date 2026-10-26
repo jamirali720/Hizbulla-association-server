@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import fs from "fs";
 import { User } from "../model/user.model.js";
-import CommitteeUser from "../model/committee.model.js";
+
 
 export const userRoles = ["অ্যাডমিন", "ইউজার"];
 
