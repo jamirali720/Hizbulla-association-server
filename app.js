@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://bangladesh-jomyate-hizbullah.web.app",
     credentials: true,
   }),
 );
