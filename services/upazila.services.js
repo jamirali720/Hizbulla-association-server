@@ -1,20 +1,3 @@
-// const upazila = await UpazilaCommittee.create({
-//   upazilaId: "barura",
-//   upazilaName: "Barura",
-//   committeeName: "Barura Upazila Committee",
-//   members: [
-//     {
-//       name: "Rahim Uddin",                                // upazila inserting data example
-//       position: "President",
-//     },
-//     {
-//       name: "Karim Ahmed",
-//       position: "General Secretary",
-//     },
-//   ],
-//   createdBy: userId,
-// });
-
 import Upazila from "../model/upazila.model.js";
 import AppError from "../utils/errors.js";
 

@@ -10,18 +10,12 @@ class AppError extends Error {
 }
 
 
-
-
-
-
 // Catch async errors automatically (wrapper)
 export const catchAsync = (fn) => {
   return (req, res, next) => {
     fn(req, res, next).catch(next);
   };
 };
-
-
 
 
 // Global error handling middleware
