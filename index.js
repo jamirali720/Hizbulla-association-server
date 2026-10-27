@@ -64,5 +64,5 @@ app.listen(port, () => {
 
 
 
-
+export default  app;
 // mongodb+srv://<db_username>:<db_password>@cluster0.laoibtz.mongodb.net/?appName=Cluster0
