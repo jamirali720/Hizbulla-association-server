@@ -13,7 +13,6 @@ export const handleGetUpazilaCommittee = catchAsync(async (req, res) => {
   });
 });
 export const handleCreateUpazilaCommittee = catchAsync(async (req, res) => {
-  // console.log("from contro", req.body)
   const result = await CreateUpazilaCommitteeService(req.body);
   successResponse(res, {
     success: true,

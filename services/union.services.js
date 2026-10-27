@@ -3,8 +3,9 @@ import Union from "./../model/union.model.js";
 
 export const getUnionCommitteeService = async (query) => {
   const { union } = query;
+  console.log(union)
   const filterUnion =
-    union === "" ? {} : { unionName: { $regex: union, $options: "i" } };
+    union === "" ? {} : { unionName: { $regex: `${union}`, $options: "i" } };
 
   return await Union.find(filterUnion).populate("user").sort({ sorting: 1 });
 };
@@ -14,7 +15,7 @@ export const CreateUnionCommitteeService = async (payload) => {
   const filteredCommittees = committees.filter(
     (item) => item.unionId === payload.unionId,
   );
-console.log("from union", payload)
+
   payload.sorting = filteredCommittees.length + 1;
 
   committees.map((committee) => {

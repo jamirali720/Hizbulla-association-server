@@ -4,10 +4,10 @@ import { committeePosts } from "../utils/helper.js";
 
 // get ward committees
 export const getWardCommitteeService = async (query) => {
-  console.log(query);
   const { ward } = query;
+  console.log(ward);
   const filterWard =
-    ward === "" ? {} : { wardName: { $regex: ward, $options: "i" } };
+    ward === "" ? {} : { wardName: { $regex: `${ward}`, $options: "i" } };
 
   return await WardCommittee.find(filterWard)
     .populate("user")

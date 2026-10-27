@@ -12,7 +12,6 @@ export const handleGetWardCommittee = catchAsync(async (req, res) => {
   });
 });
 export const handleCreateWardCommittee = catchAsync(async (req, res) => {
-  // console.log("from contro", req.body) 
   const result = await CreateWardCommitteeService(req.body);
   successResponse(res, {
     success: true,

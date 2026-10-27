@@ -44,7 +44,6 @@ const loginUserService = async (payload) => {
 };
 
 const getUsersProfileService = async (id) => {
-  console.log("from service ", id);
   const user = await User.findById(id);
   if (!user) {
     throw new ErrorHandler(httpStatus.NOT_FOUND, "User Not Found");
@@ -64,7 +63,7 @@ const getAllUsersService = async (payload) => {
   const filterVillage =
     village === "All" ? {} : { village: { $regex: village, $options: "i" } };
   const filterpirvaiMuhibbin =
-    (pirvaiMuhibbin === "All" || pirvaiMuhibbin === "")
+    pirvaiMuhibbin === "All" || pirvaiMuhibbin === ""
       ? {}
       : { position: { $regex: pirvaiMuhibbin, $options: "i" } };
 
@@ -84,8 +83,7 @@ const getAllUsersService = async (payload) => {
 };
 
 const getUsersService = async () => {
-  const users = await User.find();
-  return users;
+  return await User.find();
 };
 
 // update user profile

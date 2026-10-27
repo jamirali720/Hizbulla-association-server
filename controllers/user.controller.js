@@ -53,7 +53,7 @@ const handleLoginUser = catchAsync(async (req, res) => {
 
 const handleGetUserProfile = catchAsync(async (req, res) => {
   // const id = req.user.userId;
-  console.log( "from controller", req.query.params)
+
   const result = await authServices.getUsersProfileService(req.params.userId);
 
     console.log(result);

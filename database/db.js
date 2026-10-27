@@ -3,7 +3,7 @@ import configs from '../configs/index.js'
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(configs.databaseUrl);
+    await mongoose.connect(configs.databaseLocalUrl);
     console.log("MongoDB connected");
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);

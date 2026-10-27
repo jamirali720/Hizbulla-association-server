@@ -9,7 +9,7 @@ import { successResponse } from "./../utils/success.js";
 
 export const handleGetUnionCommittee = catchAsync(async (req, res) => {
   const query = req.query;
-console.log(req)
+
   const result = await getUnionCommitteeService(query);
   successResponse(res, {
     success: true,
@@ -20,7 +20,7 @@ console.log(req)
 });
 
 export const handleCreateUnionCommittee = catchAsync(async (req, res) => {
-  // console.log("from contro", req.body)
+ 
   const result = await CreateUnionCommitteeService(req.body);
   successResponse(res, {
     success: true,
