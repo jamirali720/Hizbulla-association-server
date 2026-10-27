@@ -1,24 +1,17 @@
-import connectDB from "./database/db.js";
 import express from "express";
-const app = express();
-const port = process.env.PORT || 4000; // Use the PORT from .env or default to 4000
-
 import cors from "cors";
 import dotenv from "dotenv";
-dotenv.config();
 
+import connectDB from "./database/db.js";
 import { errorHandler } from "./utils/errors.js";
 import router from "./routes/index.js";
 
-// Middleware to parse JSON bodies (optional but useful)
+dotenv.config();
+
+const app = express();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(
-//   cors({
-//     origin: "https://bangladesh-jomyate-hizbullah.web.app",
-//     credentials: true,
-//   }),
-// );
 
 const allowedOrigins = [
   "http://localhost:5173",
@@ -27,42 +20,45 @@ const allowedOrigins = [
 
 app.use(
   cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps or curl requests)
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.indexOf(origin) === -1) {
-        const msg =
-          "The CORS policy for this site does not allow access from the specified Origin.";
-        return callback(new Error(msg), false);
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
       }
-      return callback(null, true);
+
+      return callback(new Error("CORS origin not allowed"));
     },
     credentials: true,
   }),
 );
-app.use("/api", router);
 
-// Basic route
+// Connect to MongoDB before processing API requests
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    console.error("MongoDB connection failed:", error.message);
+
+    res.status(503).json({
+      success: false,
+      message: "Database connection failed",
+    });
+  }
+});
+
 app.get("/", (req, res) => {
   res.send("Hello World from Express!");
 });
-app.use((req, res, next) => {
-  res.status(404).json({ success: false, message: "Route not found" });
+
+app.use("/api", router);
+
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "Route not found",
+  });
 });
 
 app.use(errorHandler);
 
-
-
-
-// Start the server
-app.listen(port, async() => {
-  console.log(`Server is running at http://localhost:${port}`);
-  await connectDB();
-});
-
-
-
-export default  app;
-// mongodb+srv://<db_username>:<db_password>@cluster0.laoibtz.mongodb.net/?appName=Cluster0
+export default app;
