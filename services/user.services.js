@@ -2,13 +2,13 @@ import bcrypt from "bcryptjs";
 import httpStatus, { status } from "http-status";
 import { User } from "../model/user.model.js";
 import AppError from "../utils/errors.js";
-import { createAccessToken } from "../utils/helper.js";
+import { createAccessToken, createRefreshToken } from "../utils/helper.js";
+import configs from "../configs/index.js";
 
 const signupUserService = async (payload) => {
   const user = await User.findOne({ phone: payload.phone });
 
-  if (user) {
-    // Caught correctly by your global handler if passed via next(error)
+  if (user) {   
     throw new AppError(
       httpStatus.CONFLICT,
       "এই মোবাইল নাম্বার দিয়ে রেজিষ্ট্রেশন করা আছে",
@@ -19,11 +19,12 @@ const signupUserService = async (payload) => {
   return result;
 };
 
-const loginUserService = async (payload) => {
+const loginUserService = async (payload) => {  
   const { phone, password } = payload;
   const user = await User.findOne({ phone });
+  console.log(user);
   if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, "User dose not exist with email");
+    throw new AppError(httpStatus.NOT_FOUND, "User dose not exist with given phone");
   }
 
   const isPasswordMatched = await bcrypt.compare(password, user.password);
@@ -36,10 +37,16 @@ const loginUserService = async (payload) => {
     configs.jwtAccessTokenSecretKey,
     configs.jwtAccessTokenExpiration,
   );
+  const refreshToken = createRefreshToken(
+    user,
+    configs.jwtRefreshTokenSecreteKey,
+    configs.jwtRefreshTokenExpiration,
+  );
 
   return {
     user,
     accessToken,
+    refreshToken,
   };
 };
 

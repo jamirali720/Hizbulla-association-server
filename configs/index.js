@@ -8,8 +8,10 @@ export default {
   databaseLocalUrl: process.env.MONGO_LOCAL_URI,
   saltRound: process.env.SALT_ROUNDS,
   jwtAccessTokenSecretKey: process.env.JWT_ACCESS_TOKEN_SECRET_KEY,
+  jwtRefreshTokenSecreteKey: process.env.JWT_REFRESH_TOKEN_SECRET_KEY,
 
   jwtAccessTokenExpiration: process.env.JWT_ACCESS_TOKEN_EXPIRATION,
+  jwtRefreshTokenExpiration: process.env.JWT_REFRESH_TOKEN_EXPIRATION,
 
   adminEmail: process.env.ADMIN_EMAIL,
   NODE_ENV: process.env.NODE_ENV,

@@ -26,8 +26,8 @@ const upazilaSchema = new Schema(
     endDate: Date,
     status: {
       type: String,
-      enum: ["draft", "pending", "approved", "active", "expired"],
-      default: "draft",
+      enum: ["pending", "approved", "active", "expired"],
+      default: "pending",
     },
 
     isActive: {

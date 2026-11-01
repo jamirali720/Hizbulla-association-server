@@ -58,6 +58,15 @@ export const createAccessToken = (payload, secretKey, expiresIn) => {
   const tokenObject = {
     userId: payload._id,
     role: payload.role,
+    phone: payload.phone
+  };
+  return jwt.sign(tokenObject, secretKey, { expiresIn });
+};
+export const createRefreshToken = (payload, secretKey, expiresIn) => {
+  const tokenObject = {
+    userId: payload._id,
+    role: payload.role,
+    phone: payload.phone
   };
   return jwt.sign(tokenObject, secretKey, { expiresIn });
 };

@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+// MONGO_URI
+
 let cached = globalThis.mongoose;
 
 if (!cached) {
@@ -23,7 +25,7 @@ const connectDB = async () => {
 
   if (!cached.promise) {
     cached.promise = mongoose
-      .connect(process.env.MONGO_URI, {
+      .connect(process.env.MONGO_LOCAL_URI, {
         serverSelectionTimeoutMS: 10000,
       })
       .then((mongooseInstance) => mongooseInstance)

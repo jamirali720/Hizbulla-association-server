@@ -9,6 +9,7 @@ import { catchAsync } from "../utils/errors.js";
 import { authServices } from "../services/user.services.js";
 import { successResponse } from "../utils/success.js";
 import { generateUserId } from "../utils/helper.js";
+import configs from "../configs/index.js";
 
 const handleSignUpUser = catchAsync(async (req, res, next) => {
   // const resp = (await uploadImageToCloudinary(
@@ -31,8 +32,8 @@ const handleSignUpUser = catchAsync(async (req, res, next) => {
   });
 });
 
-const handleLoginUser = catchAsync(async (req, res) => {
-  const result = await authServices.loginauthServices(req.body);
+const handleLoginUser = catchAsync(async (req, res) => { 
+  const result = await authServices.loginUserService(req.body);
   const { user, accessToken, refreshToken } = result;
 
   res.cookie("refreshToken", refreshToken, {

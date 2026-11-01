@@ -7,7 +7,7 @@ import { errorHandler } from "./utils/errors.js";
 import router from "./routes/index.js";
 
 dotenv.config();
-
+const port = 5000;
 const app = express();
 
 app.use(express.json());
@@ -59,6 +59,9 @@ app.use((req, res) => {
   });
 });
 
+app.listen(port, ()=> {
+  console.log('https://localhost:'+port)
+});
 app.use(errorHandler);
 
 export default app;
