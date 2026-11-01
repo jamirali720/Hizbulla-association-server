@@ -21,8 +21,8 @@ const signupUserService = async (payload) => {
 
 const loginUserService = async (payload) => {  
   const { phone, password } = payload;
-  const user = await User.findOne({ phone });
-  console.log(user);
+  const user = await User.findOne({ phone }); 
+ 
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, "User dose not exist with given phone");
   }

@@ -14,6 +14,8 @@ import {
   handleDeleteUserFromDB,
   handleGetUsers,
 } from "../controllers/user.controller.js";
+import { isAuthenticated } from "../middleware/authentication.js";
+import { userRoles } from "../utils/helper.js";
 
 const userRouter = Router();
 
@@ -38,7 +40,7 @@ userRouter.route("/change-password").put(
   handleChangUserPassword,
 );
 userRouter.route("/all-users").get(handleGetAllUsers);
-userRouter.route("/users").get(handleGetUsers);
+userRouter.route("/users").get( handleGetUsers);
 
 userRouter.route("/update-role/:userId").put(handleUpdateUserRole);
 
