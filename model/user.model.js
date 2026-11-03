@@ -76,7 +76,8 @@ const userSchema = new Schema(
     },
     role: {
       type: String,
-      default: "ইউজার",
+      default: "user",
+      
     },
     position: {
       type: String,
@@ -98,7 +99,7 @@ const userSchema = new Schema(
 userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, 10);
   if (this.phone === process.env.ADMIN_PHONE) {
-    this.role = "অ্যাডমিন";
+    this.role = "admin";
   }
   // next();
 });

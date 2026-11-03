@@ -30,7 +30,10 @@ userRouter.route("/profile/:userId").get(handleGetUserProfile);
 
 userRouter
   .route("/update-profile/:userId")
-  .put(isAuthenticated(userRoles[0], userRoles[1]), handleUpdateUserProfile);
+  .put(
+    isAuthenticated(userRoles.admin, userRoles.user),
+    handleUpdateUserProfile,
+  );
 
 userRouter.route("/update-profile-image").put(
   upload.single("image"),
@@ -42,14 +45,14 @@ userRouter.route("/change-password").put(
   handleChangUserPassword,
 );
 userRouter.route("/all-users").get(handleGetAllUsers);
-userRouter.route("/users").get( handleGetUsers);
+userRouter.route("/users").get(handleGetUsers);
 
 userRouter
   .route("/update-role/:userId")
-  .put(isAuthenticated(userRoles[0]), handleUpdateUserRole);
+  .put(isAuthenticated(userRoles.admin), handleUpdateUserRole);
 
 userRouter
   .route("/delete-user/:userId")
-  .delete(isAuthenticated(userRoles[0]), handleDeleteUserFromDB);
+  .delete(isAuthenticated(userRoles.admin), handleDeleteUserFromDB);
 
 export default userRouter;

@@ -46,18 +46,14 @@ const handleLoginUser = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).json({
     success: true,
     statusCode: 201,
-    message: "User logged in successfully",
+    message: "You have logged in successfully",
     token: accessToken,
     data: user,
   });
 });
 
 const handleGetUserProfile = catchAsync(async (req, res) => {
-  // const id = req.user.userId;
-
   const result = await authServices.getUsersProfileService(req.params.userId);
-
-    console.log(result);
   successResponse(res, {
     success: true,
     statusCode: 200,

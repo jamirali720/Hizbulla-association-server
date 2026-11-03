@@ -188,7 +188,7 @@ const changePasswordService = async (id, payload) => {
   return result;
 };
 
-// update user status
+// update user role
 const updateUserRoleService = async (id, payload) => {
   const user = await User.findByIdAndUpdate(id, payload, {
     returnDocument: "after",
@@ -197,7 +197,7 @@ const updateUserRoleService = async (id, payload) => {
   if (!user) {
     throw new ErrorHandler(
       httpStatus.NOT_FOUND,
-      "Failed to update user status",
+      "Failed to update user role",
     );
   }
   return user;

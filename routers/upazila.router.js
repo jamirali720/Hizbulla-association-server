@@ -18,17 +18,17 @@ upazilaRouter
   .route("/")
   .post(
     upload.none(),
-    isAuthenticated(userRoles[0]),
+    isAuthenticated(userRoles.admin),
     handleCreateUpazilaCommittee,
   );
 
 // update
 upazilaRouter
   .route("/:upcommitteeId")
-  .put(isAuthenticated(userRoles[0]), handleUpdatedUpazilaCommittee);
+  .put(isAuthenticated(userRoles.admin), handleUpdatedUpazilaCommittee);
 //delete
 upazilaRouter
   .route("/:upcommitteeId")
-  .delete(isAuthenticated(userRoles[0]), handleDeletedUpazilaCommittee);
+  .delete(isAuthenticated(userRoles.admin), handleDeletedUpazilaCommittee);
 
 export default upazilaRouter;

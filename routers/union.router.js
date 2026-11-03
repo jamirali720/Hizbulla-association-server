@@ -14,17 +14,17 @@ unionRouter
   .route("/")
   .post(
     upload.none(),
-    isAuthenticated(userRoles[0]),
+    isAuthenticated(userRoles.admin),
     handleCreateUnionCommittee,
   );
 
 // update
 unionRouter
   .route("/:uncommitteeId")
-  .put(isAuthenticated(userRoles[0]), handleUpdatedUnionCommittee);
+  .put(isAuthenticated(userRoles.admin), handleUpdatedUnionCommittee);
 //delete
 unionRouter
   .route("/:uncommitteeId")
-  .delete(isAuthenticated(userRoles[0]), handleDeletedUnionCommittee);
+  .delete(isAuthenticated(userRoles.admin), handleDeletedUnionCommittee);
 
 export default unionRouter;

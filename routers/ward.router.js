@@ -14,17 +14,17 @@ wardRouter
   .route("/")
   .post(
     upload.none(),
-    isAuthenticated(userRoles[0]),
+    isAuthenticated(userRoles.admin),
     handleCreateWardCommittee,
   );
 
 // update
 wardRouter
   .route("/:wdcommitteeId")
-  .put(isAuthenticated(userRoles[0]), handleUpdatedWardCommittee);
+  .put(isAuthenticated(userRoles.admin), handleUpdatedWardCommittee);
 //delete
 wardRouter
   .route("/:wdcommitteeId")
-  .delete(isAuthenticated(userRoles[0]), handleDeletedWardCommittee);
+  .delete(isAuthenticated(userRoles.admin), handleDeletedWardCommittee);
 
 export default wardRouter;

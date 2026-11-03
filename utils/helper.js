@@ -3,7 +3,7 @@ import fs from "fs";
 import { User } from "../model/user.model.js";
 
 
-export const userRoles = ["অ্যাডমিন", "ইউজার"];
+export const userRoles = {admin:"admin", user:"user"};
 
 
 export const committeePosts = [

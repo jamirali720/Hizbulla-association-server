@@ -4,6 +4,7 @@ import userRouter from "../routers/user.router.js";
 import upazilaRouter from "../routers/upazila.router.js";
 import unionRouter from "../routers/union.router.js";
 import wardRouter from "../routers/ward.router.js";
+import talimRouter from "../routers/talim.router.js";
 
 
 
@@ -25,6 +26,10 @@ const moduleRoutes = [
   {
     path: "/ward",
     route: wardRouter,
+  },
+  {
+    path: "/talim",
+    route: talimRouter,
   },
   
 ];
