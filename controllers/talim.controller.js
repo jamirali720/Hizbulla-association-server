@@ -2,7 +2,6 @@ import {
   CreateTalimService,
   deletedTalimService,
   getTalimsService,
-  updatedTalimService,
 } from "../services/talim.services.js";
 import { catchAsync } from "../utils/errors.js";
 import { successResponse } from "./../utils/success.js";
@@ -17,8 +16,8 @@ export const handleGetTalims = catchAsync(async (req, res) => {
   });
 });
 export const handleCreateTalim = catchAsync(async (req, res) => {
-    const userId = req.userId;
-  const result = await CreateTalimService({...req.body, user:userId});
+  const userId = req.userId;
+  const result = await CreateTalimService({ ...req.body, user: userId });
   successResponse(res, {
     success: true,
     statusCode: 201,
@@ -26,18 +25,7 @@ export const handleCreateTalim = catchAsync(async (req, res) => {
     data: result,
   });
 });
-export const handleUpdatedTalim = catchAsync(async (req, res) => {
-  const result = await updatedTalimService({
-    ...req.body,
-    wdcommitteeId: req.params.talimId,
-  });
-  successResponse(res, {
-    success: true,
-    statusCode: 200,
-    message: "তালিম সফলভাবে আপডেট হয়েছে।",
-    data: result,
-  });
-});
+
 export const handleDeletedTalim = catchAsync(async (req, res) => {
   const result = await deletedTalimService(req.params.talimId);
   successResponse(res, {
