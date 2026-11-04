@@ -2,7 +2,7 @@ import { Talim } from "./../model/talim.model.js";
 
 // get ward committees
 export const getTalimsService = async () => {
-  return await Talim.find();
+  return await Talim.find().sort({ date: 1 });
 };
 
 // create new ward committee
