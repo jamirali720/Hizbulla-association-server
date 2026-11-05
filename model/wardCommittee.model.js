@@ -10,12 +10,12 @@ const wardCommitteeSchema = Schema(
       type: String,
       required: true,
     },
-    wardName: {
+    ward: {
       type: String,
       required: true,
       trim: true,
     },
-    committeeName: {
+    committee: {
       type: String,
       required: true,
       trim: true,
@@ -24,10 +24,6 @@ const wardCommitteeSchema = Schema(
       type: String,
       required: true,
       trim: true,
-    },
-    isActive: {
-      type: Boolean,
-      default: true,
     },
     sorting: {
       type: Number,

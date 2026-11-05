@@ -10,12 +10,12 @@ const unionSchema = new Schema(
       type: String,
       required: true,
     },
-    unionName: {
+    union: {
       type: String,
       required: true,
       trim: true,
     },
-    committeeName: {
+    committee: {
       type: String,
       required: true,
       trim: true,
@@ -24,11 +24,7 @@ const unionSchema = new Schema(
       type: String,
       required: true,
       trim: true,
-    },
-    isActive: {
-      type: Boolean,
-      default: true,
-    },
+    },   
     sorting: {
       type: Number,
       default:0,

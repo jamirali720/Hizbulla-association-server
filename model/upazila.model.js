@@ -6,12 +6,12 @@ const upazilaSchema = new Schema(
       type: String,
       required: true,
     },
-    upazilaName: {
+    upazila: {
       type: String,
       required: true,
       trim: true,
     },
-    committeeName: {
+    committee: {
       type: String,
       required: true,
       trim: true,
@@ -21,18 +21,10 @@ const upazilaSchema = new Schema(
       required: true,
       trim: true,
     },
-
-    startDate: Date,
-    endDate: Date,
     status: {
       type: String,
       enum: ["pending", "approved", "active", "expired"],
       default: "pending",
-    },
-
-    isActive: {
-      type: Boolean,
-      default: true,
     },
     sorting: {
       type: Number,
@@ -44,11 +36,6 @@ const upazilaSchema = new Schema(
       required: true,
       unique: true,
     },
-    // createdBy: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: "User",
-    //   required: true,
-    // },
   },
   { timestamps: true },
 );

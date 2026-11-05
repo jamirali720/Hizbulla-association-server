@@ -8,7 +8,6 @@ import {
   handleGetUserProfile,
   handleGetAllUsers,
   handleUpdateUserProfile,
-  handleUpdateUserProfileImage,
   handleChangUserPassword,
   handleUpdateUserRole,
   handleDeleteUserFromDB,
@@ -35,11 +34,6 @@ userRouter
     handleUpdateUserProfile,
   );
 
-userRouter.route("/update-profile-image").put(
-  upload.single("image"),
-  // isAuthenticated(roles.admin, roles.user),
-  handleUpdateUserProfileImage,
-);
 userRouter.route("/change-password").put(
   // isAuthenticated(roles.admin, roles.user),
   handleChangUserPassword,

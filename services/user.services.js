@@ -8,23 +8,28 @@ import configs from "../configs/index.js";
 const signupUserService = async (payload) => {
   const user = await User.findOne({ phone: payload.phone });
 
-  if (user) {   
+  if (user) {
     throw new AppError(
       httpStatus.CONFLICT,
       "এই মোবাইল নাম্বার দিয়ে রেজিষ্ট্রেশন করা আছে",
     );
   }
 
+  payload.password = payload.phone;
+
   let result = await User.create(payload);
   return result;
 };
 
-const loginUserService = async (payload) => {  
+const loginUserService = async (payload) => {
   const { phone, password } = payload;
-  const user = await User.findOne({ phone }); 
- 
+  const user = await User.findOne({ phone });
+
   if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, "User dose not exist with given phone");
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      "User dose not exist with given phone",
+    );
   }
 
   const isPasswordMatched = await bcrypt.compare(password, user.password);
@@ -195,10 +200,7 @@ const updateUserRoleService = async (id, payload) => {
     runValidators: true,
   });
   if (!user) {
-    throw new ErrorHandler(
-      httpStatus.NOT_FOUND,
-      "Failed to update user role",
-    );
+    throw new ErrorHandler(httpStatus.NOT_FOUND, "Failed to update user role");
   }
   return user;
 };

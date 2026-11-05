@@ -9,7 +9,7 @@ dotenv.config();
 
 const userSchema = new Schema(
   {
-    fullname: {
+    name: {
       type: String,
       required: [true, "Name is required"],
       trim: true,
@@ -65,11 +65,6 @@ const userSchema = new Schema(
       default:""
 
     },
-    isActive: {
-      type: Boolean,
-      default: true,
-    },
-
     ward: {
       type: String,
       default: 0,
@@ -82,15 +77,7 @@ const userSchema = new Schema(
     position: {
       type: String,
       default: "মুরীদ",
-    },
-    image: {
-      url: {
-        type: String,
-      },
-      public_id: {
-        type: String,
-      },
-    },
+    }    
   },
   { timestamps: true },
 );
