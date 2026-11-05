@@ -25,7 +25,7 @@ export const CreateUnionCommitteeService = async (payload) => {
     ) {
       throw new AppError(
         400,
-        `এই ${committee.user.fullname} - ${committee.position} পদে ${committee.committee}তে যুক্ত আছেন। ${payload.position} পদে যুক্ত হতে পারেন না`,
+        `এই ${committee.user.name} - ${committee.position} পদে ${committee.committee}তে যুক্ত আছেন। ${payload.position} পদে যুক্ত হতে পারেন না`,
       );
     }
     if (
