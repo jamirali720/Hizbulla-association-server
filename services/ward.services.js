@@ -5,9 +5,8 @@ import { committeePosts } from "../utils/helper.js";
 // get ward committees
 export const getWardCommitteeService = async (query) => {
   const { ward } = query;
-  console.log(ward);
   const filterWard =
-    ward === "" ? {} : { wardName: { $regex: `${ward}`, $options: "i" } };
+    ward === "" ? {} : { ward: { $regex: `${ward}`, $options: "i" } };
 
   return await WardCommittee.find(filterWard)
     .populate("user")
@@ -36,7 +35,7 @@ export const CreateWardCommitteeService = async (payload) => {
     ) {
       throw new AppError(
         400,
-        `এই ${committee.user?.fullname || "ব্যবহারকারী"} - ${committee.position} পদে ${committee.committeeName}তে যুক্ত আছেন। ${payload.position} পদে যুক্ত হতে পারবেন না`,
+        `এই ${committee.user?.name || "ব্যবহারকারী"} - ${committee.position} পদে ${committee.committee}তে যুক্ত আছেন। ${payload.position} পদে যুক্ত হতে পারবেন না`,
       );
     } else if (
       committee.unionId?.toString() === payload.unionId?.toString() && // safe string comparison for all IDs
@@ -45,7 +44,7 @@ export const CreateWardCommitteeService = async (payload) => {
     ) {
       throw new AppError(
         400,
-        `এই ${committee.user?.fullname || "ব্যবহারকারী"} - ${committee.position} পদে ${committee.committeeName}তে যুক্ত আছেন। ${payload.position} পদে যুক্ত হতে পারবেন না`,
+        `এই ${committee.user?.name || "ব্যবহারকারী"} - ${committee.position} পদে ${committee.committee}তে যুক্ত আছেন। ${payload.position} পদে যুক্ত হতে পারবেন না`,
       );
     } else if (
       isSameUser &&
@@ -55,7 +54,7 @@ export const CreateWardCommitteeService = async (payload) => {
     ) {
       throw new AppError(
         400,
-        ` ${committee.user?.fullname} ইতিমধ্যে ${committee.committeeName}তে ${committee.position} পদে যুক্ত আছেন। 
+        ` ${committee.user?.name} ইতিমধ্যে ${committee.committee}তে ${committee.position} পদে যুক্ত আছেন। 
         ${payload.position} পদে আর ‍যুক্ত হতে পারবেন না ।`,
       );
     }

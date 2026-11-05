@@ -3,9 +3,9 @@ import Union from "./../model/union.model.js";
 
 export const getUnionCommitteeService = async (query) => {
   const { union } = query;
-  console.log(union)
+
   const filterUnion =
-    union === "" ? {} : { unionName: { $regex: `${union}`, $options: "i" } };
+    union === "" ? {} : { union: { $regex: `${union}`, $options: "i" } };
 
   return await Union.find(filterUnion).populate("user").sort({ sorting: 1 });
 };
@@ -25,16 +25,16 @@ export const CreateUnionCommitteeService = async (payload) => {
     ) {
       throw new AppError(
         400,
-        `এই ${committee.user.fullname} - ${committee.position} পদে ${committee.committeeName}তে যুক্ত আছেন। ${payload.position} পদে যুক্ত হতে পারেন না`,
+        `এই ${committee.user.fullname} - ${committee.position} পদে ${committee.committee}তে যুক্ত আছেন। ${payload.position} পদে যুক্ত হতে পারেন না`,
       );
     }
     if (
-      committee.committeeName === payload.committeeName &&
+      committee.committee === payload.committee &&
       committee.position.includes(payload.position)
     ) {
       throw new AppError(
         400,
-        ` ${payload.position} পদ ${committee.committeeName}তে শূন্য নয়!, অন্য কোন পদে যুক্ত করুন`,
+        ` ${payload.position} পদ ${committee.committee}তে শূন্য নয়!, অন্য কোন পদে যুক্ত করুন`,
       );
     }
   });

@@ -81,7 +81,7 @@ const getAllUsersService = async (payload) => {
 
   const filter = {
     $or: [
-      { fullname: { $regex: searchRegExp } },
+      { name: { $regex: searchRegExp } },
       { phone: { $regex: searchRegExp } },
     ],
     $and: [filterUnion, filterWard, filterVillage, filterpirvaiMuhibbin],
@@ -101,17 +101,17 @@ const getUsersService = async () => {
 // update user profile
 const updateUsersProfileService = async (id, payload) => {
   const updates = {};
-  const allowedUpdatesFields = [
-    "fullname",
-    "phone",
-    "district",
-    "upazila",
-    "union",
-    "ward",
-    "village",
-    "committeePost",
-    "status",
-  ];
+  // const allowedUpdatesFields = [
+  //   "name",
+  //   "phone",
+  //   "district",
+  //   "upazila",
+  //   "union",
+  //   "ward",
+  //   "village",
+  //   "committeePost",
+  //   "status",
+  // ];
 
   // if (payload && typeof payload === "object") {
   //   for (const key in payload) {
