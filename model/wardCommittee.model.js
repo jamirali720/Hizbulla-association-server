@@ -39,5 +39,5 @@ const wardCommitteeSchema = Schema(
 );
 
 
-const WardCommittee = model("WardCommittee", wardCommitteeSchema);
-export default WardCommittee;
+const Ward = model("Ward", wardCommitteeSchema);
+export default Ward;

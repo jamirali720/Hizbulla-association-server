@@ -1,11 +1,12 @@
 import AppError from "../utils/errors.js";
+import { uniquePosts } from "../utils/helper.js";
 import Union from "./../model/union.model.js";
 
 export const getUnionCommitteeService = async (query) => {
   const { union } = query;
 
   const filterUnion =
-    union === "" ? {} : { union: { $regex: `${union}`, $options: "i" } };
+    union === "" ? {} : { unionId: { $regex: `${union}`, $options: "i" } };
 
   return await Union.find(filterUnion).populate("user").sort({ sorting: 1 });
 };
@@ -28,15 +29,16 @@ export const CreateUnionCommitteeService = async (payload) => {
         `এই ${committee.user.name} - ${committee.position} পদে ${committee.committee}তে যুক্ত আছেন। ${payload.position} পদে যুক্ত হতে পারেন না`,
       );
     }
-    if (
-      committee.committee === payload.committee &&
-      committee.position.includes(payload.position)
-    ) {
+  if (uniquePosts.includes(payload.position)) {
+    const existingPosition = committee.position.includes(payload.position);
+
+    if (existingPosition) {
       throw new AppError(
         400,
-        ` ${payload.position} পদ ${committee.committee}তে শূন্য নয়!, অন্য কোন পদে যুক্ত করুন`,
+        `${committee.user.name} - ${payload.position} পদে ইতিমধ্যে নিয়োজিত আছেন। ডাবল এন্ট্রি সম্ভব নয়।`,
       );
     }
+  }
   });
 
   return await Union.create(payload);

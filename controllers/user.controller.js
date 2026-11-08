@@ -86,6 +86,19 @@ const handleUpdateUserProfile = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const handleUpdateUserInfo = catchAsync(async (req, res) => {
+  // const id = req.user.userId;
+  const userId = req.params.userId;
+  const updateData = req.body;
+
+  const result = await authServices.updateUserInfoService(userId, updateData);
+  successResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: "Your information updated successfully",
+    data: result,
+  });
+});
 
 // update user status
 const handleUpdateUserRole = catchAsync(async (req, res) => {
@@ -127,6 +140,7 @@ export {
   handleSignUpUser,
   handleLoginUser,
   handleGetUserProfile,
+  handleUpdateUserInfo,
   handleGetAllUsers,
   handleGetUsers,
   handleUpdateUserProfile, 

@@ -12,6 +12,9 @@ export const CreateTalimService = async (payload) => {
 
 // delete ward by ID
 export const deletedTalimService = async (id) => {
-  console.log(id);
+  return await Talim.findByIdAndDelete(id);
+};
+// delete ward by ID automatically
+export const deletedTalimAutoService = async (id) => {
   return await Talim.findByIdAndDelete(id);
 };

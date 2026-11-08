@@ -1,9 +1,13 @@
+import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import httpStatus, { status } from "http-status";
 import { User } from "../model/user.model.js";
 import AppError from "../utils/errors.js";
 import { createAccessToken, createRefreshToken } from "../utils/helper.js";
 import configs from "../configs/index.js";
+import Upazila from "./../model/upazila.model.js";
+import Union from "./../model/union.model.js";
+import Ward from "./../model/wardCommittee.model.js";
 
 const signupUserService = async (payload) => {
   const user = await User.findOne({ phone: payload.phone });
@@ -141,6 +145,29 @@ const updateUsersProfileService = async (id, payload) => {
 
   return result;
 };
+const updateUserInfoService = async (id, payload) => {
+  const updates = {};
+
+  Object.keys(payload).forEach((key) => {
+    if (
+      payload[key] !== undefined &&
+      payload[key] !== null &&
+      payload[key] !== ""
+    ) {
+      updates[key] = payload[key];
+    }
+  });
+
+  const result = await User.findByIdAndUpdate(id, updates, {
+    returnDocument: "after",
+    runValidators: true,
+  });
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, "Failed to update ");
+  }
+
+  return result;
+};
 
 // Update users profile image
 const updateUserProfileImage = async (id, payload) => {
@@ -207,7 +234,23 @@ const updateUserRoleService = async (id, payload) => {
 
 // delete user
 const deleteUserFromDBService = async (id) => {
-  return await User.findByIdAndDelete(id);
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+    await Upazila.findOneAndDelete({ user: id }, { session });
+    await Union.findOneAndDelete({ user: id }, { session });
+    await Ward.findOneAndDelete({ user: id }, { session });
+    const userResult = await User.findByIdAndDelete(id, { session });
+
+    await session.commitTransaction();
+    await session.endSession();
+    return userResult;
+  } catch (error) {
+    await session.abortTransaction();
+    console.log(error);
+    await session.endSession();
+    throw new AppError(httpStatus.BAD_REQUEST, error.message);
+  }
 };
 
 export const authServices = {
@@ -217,6 +260,7 @@ export const authServices = {
   getAllUsersService,
   getUsersService,
   updateUsersProfileService,
+  updateUserInfoService,
   updateUserProfileImage,
   changePasswordService,
   updateUserRoleService,

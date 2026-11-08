@@ -19,6 +19,14 @@ const userSchema = new Schema(
       required: [true, "User ID is required"],
       trim: true,
     },
+    nidNo: {
+      type: String,      
+      default:""
+    },
+    formNo: {
+      type: String,      
+      default:""
+    },
 
     password: {
       type: String,
@@ -58,12 +66,6 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Address is required"],
       trim: true,
-    },
-    position: {
-      type: String,
-      trim: true,
-      default:""
-
     },
     ward: {
       type: String,

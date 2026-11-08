@@ -1,13 +1,14 @@
 import Upazila from "../model/upazila.model.js";
 import AppError from "../utils/errors.js";
+import { uniquePosts } from "../utils/helper.js";
 
 export const getUpazilaCommitteeService = async () => {
-  const data = await Upazila.find().populate("user").sort({sorting: 1});
+  const data = await Upazila.find().populate("user").sort({ sorting: 1 });
   return data;
 };
 export const CreateUpazilaCommitteeService = async (payload) => {
   const committees = await Upazila.find().populate("user");
-  
+
   payload.sorting = committees.length + 1;
 
   committees.map((committee) => {
@@ -17,14 +18,16 @@ export const CreateUpazilaCommitteeService = async (payload) => {
         `এই ${committee.user.name} - ${committee.position} পদে ${committee.committee}তে যুক্ত আছেন। ${payload.position} পদে যুক্ত হতে পারেন না`,
       );
     }
-    if (
-      committee.committee === payload.committee &&
-      committee.position.includes(payload.position)
-    ) {
-      throw new AppError(
-        400,
-        ` ${payload.position} পদ ${committee.committee}তে শূন্য নয়!, অন্য কোন পদে যুক্ত করুন`,
-      );
+    
+    if (uniquePosts.includes(payload.position)) {
+      const existingPosition = committee.position.includes(payload.position);
+
+      if (existingPosition) {
+        throw new AppError(
+          400,
+          `${committee.user.name} - ${payload.position} পদে ইতিমধ্যে নিয়োজিত আছেন। ডাবল এন্ট্রি সম্ভব নয়।`,
+        );
+      }
     }
   });
 

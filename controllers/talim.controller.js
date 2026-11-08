@@ -35,3 +35,12 @@ export const handleDeletedTalim = catchAsync(async (req, res) => {
     data: result,
   });
 });
+export const handleAutoDeletedTalim = catchAsync(async (req, res) => {
+  const result = await deletedTalimService(req.params.talimId);
+  successResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: "তালিম অটো ডিলিট হয়েছে।",
+    data: result,
+  });
+});

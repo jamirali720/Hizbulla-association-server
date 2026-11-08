@@ -12,6 +12,7 @@ import {
   handleUpdateUserRole,
   handleDeleteUserFromDB,
   handleGetUsers,
+  handleUpdateUserInfo,
 } from "../controllers/user.controller.js";
 import { isAuthenticated } from "../middleware/authentication.js";
 import { userRoles } from "../utils/helper.js";
@@ -20,6 +21,7 @@ const userRouter = Router();
 
 userRouter.route("/signup").post(
   // upload.single("image"),
+  upload.none(),
   handleSignUpUser,
 );
 
@@ -32,6 +34,12 @@ userRouter
   .put(
     isAuthenticated(userRoles.admin, userRoles.user),
     handleUpdateUserProfile,
+  );
+userRouter
+  .route("/update-user-info/:userId")
+  .put(
+    isAuthenticated(userRoles.admin, userRoles.user),
+    handleUpdateUserInfo,
   );
 
 userRouter.route("/change-password").put(

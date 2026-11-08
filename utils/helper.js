@@ -2,9 +2,7 @@ import jwt from "jsonwebtoken";
 import fs from "fs";
 import { User } from "../model/user.model.js";
 
-
-export const userRoles = {admin:"admin", user:"user"};
-
+export const userRoles = { admin: "admin", user: "user" };
 
 export const committeePosts = [
   "সভাপতি",
@@ -28,6 +26,22 @@ export const committeePosts = [
   "দপ্তর সম্পাদক",
   "সহকারী দপ্তর সম্পদক",
   "সদস্য",
+];
+
+export const uniquePosts = [
+  "সভাপতি",
+  "সাধারণ সম্পাদক",
+  "যুগ্ম-সাধারণ সম্পদক",
+  "তা’লিমে তরীকত সম্পাদক",
+  "সিঃ সহ-তা’লিমে তরীকত সম্পাদক",
+  "সাংগঠনিক সম্পদক",
+  "প্রচার সম্পাদক",
+  "গবেষনা ও প্রকাশনা সম্পাদক",
+  "শিক্ষা ও সাংস্কৃতিক সম্পাদক",
+  "সেবা ও সমাজ কল্যাণ সম্পাদক",
+  "অর্থ সম্পাদক",
+  "অডিটর",
+  "দপ্তর সম্পাদক",
 ];
 
 export const unionNames = [
@@ -58,7 +72,7 @@ export const createAccessToken = (payload, secretKey, expiresIn) => {
   const tokenObject = {
     userId: payload._id,
     role: payload.role,
-    phone: payload.phone
+    phone: payload.phone,
   };
   return jwt.sign(tokenObject, secretKey, { expiresIn });
 };
@@ -66,7 +80,7 @@ export const createRefreshToken = (payload, secretKey, expiresIn) => {
   const tokenObject = {
     userId: payload._id,
     role: payload.role,
-    phone: payload.phone
+    phone: payload.phone,
   };
   return jwt.sign(tokenObject, secretKey, { expiresIn });
 };
@@ -81,9 +95,8 @@ export const deleteImagePath = (path) => {
 };
 
 export const generateUserId = async () => {
-  const lastUser = await User.findOne().sort({userId: -1}).exec();
-  const lastId =lastUser ? parseInt(lastUser.userId) : 0;
-  const newId = (lastId + 1).toString().padStart(7, "0") ;
+  const lastUser = await User.findOne().sort({ userId: -1 }).exec();
+  const lastId = lastUser ? parseInt(lastUser.userId) : 0;
+  const newId = (lastId + 1).toString().padStart(7, "0");
   return newId;
 };
-
