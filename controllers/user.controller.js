@@ -26,8 +26,20 @@ const handleSignUpUser = catchAsync(async (req, res, next) => {
   });
 });
 
-const handleLoginUser = catchAsync(async (req, res) => { 
+const handleLoginUser = catchAsync(async (req, res) => {
   const result = await authServices.loginUserService(req.body);
+
+  if (!result || !result.user) {
+    return res.status(httpStatus.OK).json({
+      // ba 404/400 status dite paren
+      success: false,
+      statusCode: 404,
+      message: result?.message || "User does not exist with given phone",
+      data: null,
+    });
+  }
+  
+  // User paowa gele processing ager mtooi thakbe
   const { user, accessToken, refreshToken } = result;
 
   res.cookie("refreshToken", refreshToken, {
@@ -39,7 +51,7 @@ const handleLoginUser = catchAsync(async (req, res) => {
 
   res.status(httpStatus.OK).json({
     success: true,
-    statusCode: 201,
+    statusCode: 200, // Notun create hoche na tai login-er jonno 200 dewa sreyobodh
     message: "You have logged in successfully",
     token: accessToken,
     data: user,
@@ -55,7 +67,7 @@ const handleGetUserProfile = catchAsync(async (req, res) => {
     data: result,
   });
 });
-const handleGetAllUsers = catchAsync(async (req, res) => {    
+const handleGetAllUsers = catchAsync(async (req, res) => {
   const result = await authServices.getAllUsersService(req.query);
   successResponse(res, {
     success: true,
@@ -64,7 +76,7 @@ const handleGetAllUsers = catchAsync(async (req, res) => {
     data: result,
   });
 });
-const handleGetUsers = catchAsync(async (req, res) => {    
+const handleGetUsers = catchAsync(async (req, res) => {
   const result = await authServices.getUsersService();
   successResponse(res, {
     success: true,
@@ -78,7 +90,10 @@ const handleUpdateUserProfile = catchAsync(async (req, res) => {
   const userId = req.params.userId;
   const updateData = req.body;
 
-  const result = await authServices.updateUsersProfileService(userId, updateData);
+  const result = await authServices.updateUsersProfileService(
+    userId,
+    updateData,
+  );
   successResponse(res, {
     success: true,
     statusCode: 200,
@@ -143,7 +158,7 @@ export {
   handleUpdateUserInfo,
   handleGetAllUsers,
   handleGetUsers,
-  handleUpdateUserProfile, 
+  handleUpdateUserProfile,
   handleChangUserPassword,
   handleUpdateUserRole,
   handleDeleteUserFromDB,

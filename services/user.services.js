@@ -30,10 +30,12 @@ const loginUserService = async (payload) => {
   const user = await User.findOne({ phone });
 
   if (!user) {
-    throw new AppError(
-      httpStatus.NOT_FOUND,
-      "User dose not exist with given phone",
-    );
+    return {
+      user: null,
+      message: "User does not exist with given phone",
+      accessToken: null,
+      refreshToken: null,
+    };
   }
 
   const isPasswordMatched = await bcrypt.compare(password, user.password);
@@ -52,11 +54,7 @@ const loginUserService = async (payload) => {
     configs.jwtRefreshTokenExpiration,
   );
 
-  return {
-    user,
-    accessToken,
-    refreshToken,
-  };
+    return { user, accessToken, refreshToken };
 };
 
 const getUsersProfileService = async (id) => {
@@ -147,6 +145,13 @@ const updateUsersProfileService = async (id, payload) => {
 };
 const updateUserInfoService = async (id, payload) => {
   const updates = {};
+  const { phone } = payload;
+
+  if (phone) {
+    const hashedPassword = await bcrypt.hash(phone, Number(configs.saltRound));
+
+    updates.password = hashedPassword;
+  }
 
   Object.keys(payload).forEach((key) => {
     if (
